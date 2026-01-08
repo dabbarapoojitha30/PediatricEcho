@@ -1,0 +1,99 @@
+
+body {
+    background-color:#f2f5f9;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    margin:30px 0;
+    font-weight:1000;;
+    color:rgb(27, 36, 40);
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-weight:600;
+    color: rgb(36, 44, 51);
+    font-size: x-large;
+     text-align: center;
+}
+
+.container {
+    max-width:700px;
+    margin: auto;
+}
+
+.input-form,
+.searchcard {
+    background: #f9f9f9;
+    padding:30px;
+    border-radius: 8px;
+    box-shadow:0 8px 20px grey;
+    margin-bottom: 20px;
+
+}
+
+.Input {
+    margin-bottom:10px;
+}
+
+label {
+    font-weight:800;
+    margin-bottom:5px;
+    display: block;
+    color: #222629;
+}
+
+.form-control,
+.form-select {
+    border-radius: 8px;
+    border: 1px solid #2f4538;
+    padding:10px;
+    box-shadow: none
+}
+.form-control:focus,
+.form-select:focus {
+    border-color: #198754;
+    box-shadow: none;
+}
+
+textarea.form-control {
+    min-height: 120px;
+    resize: none;
+}
+
+.btn-success {
+    border-radius: 8px;
+    font-weight: 800;
+    padding: 10px;
+}
+
+.btn-success:hover {
+    opacity: 0.8;
+}
+
+.data {
+    margin-top: 20px;
+    padding: 30px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    border:1px solid grey ;
+}
+
+.data p {
+    margin: 6px 0;
+    color: #333;
+}
+
+
+@media (max-width: 576px) {
+    .input-form,
+    .searchcard {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+}
