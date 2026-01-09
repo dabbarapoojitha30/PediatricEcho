@@ -6,7 +6,6 @@ const port = 3000;
 app.use(express.json());
 app.use(express.static("public"));
 
-// Add / Update patient
 app.post("/add", (req, res) => {
   console.log("ADD API HIT:", req.body);
 
@@ -27,7 +26,6 @@ app.post("/add", (req, res) => {
       if (err) return res.status(500).json({ message: "Database error" });
 
       if (result.length > 0) {
-        // Update existing patient
         db.query(
           "UPDATE patients SET name=?, age=?, sex=?, dob=?, weight=?, diagnosis=? WHERE TRIM(LOWER(id)) = LOWER(?)",
           [name, patientAge, sex, dob, patientWeight, diagnosis, patientId],
@@ -37,7 +35,7 @@ app.post("/add", (req, res) => {
           }
         );
       } else {
-        // Insert new patient
+       
         db.query(
           "INSERT INTO patients (id, name, age, sex, dob, weight, diagnosis) VALUES (?, ?, ?, ?, ?, ?, ?)",
           [patientId, name, patientAge, sex, dob, patientWeight, diagnosis],
@@ -51,7 +49,6 @@ app.post("/add", (req, res) => {
   );
 });
 
-// Search patient
 app.post("/search", (req, res) => {
   const { id } = req.body;
   if (!id) return res.json({ status: "error", message: "No ID provided" });
@@ -73,3 +70,6 @@ app.post("/search", (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

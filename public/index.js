@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const ageSelect = document.getElementById("age");
 
-  // Fill age dropdown 1-100
   for (let i = 1; i <= 100; i++) {
     const option = document.createElement("option");
     option.value = i;
@@ -9,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
     ageSelect.appendChild(option);
   }
 
-  // Add / Update patient
   document.getElementById("addForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -23,7 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
       diagnosis: document.querySelector('textarea[name="diagnosis"]').value.trim(),
     };
 
-    // Validation
     if (!data.id) return alert("Patient ID required");
     if (!data.name) return alert("Patient name required");
     if (!data.age) return alert("Please select age");
@@ -49,7 +46,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 
-  // Search patient
   document.getElementById("searchform").addEventListener("submit", function (e) {
     e.preventDefault();
     const id = this.elements["id"].value.trim();
