@@ -1,77 +1,41 @@
-require('dotenv').config();
-
 const express = require("express");
-const db = require("./db");
+const path = require("path");
+const cors = require("cors");
+require("dotenv").config();
+
+const db = require("./db");   // ✅ DB connection
+
 const app = express();
-const port = 3000;
 
+app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
 
-app.post("/add", (req, res) => {
-  console.log("ADD API HIT:", req.body);
+// ✅ Serve frontend
+app.use(express.static(path.join(__dirname, "public")));
 
-  const { id, name, age, sex, dob, weight, diagnosis } = req.body;
+// ✅ Test backend
+app.get("/api/test", (req, res) => {
+  res.json({ status: "Backend working" });
+});
 
-  if (!id || !name || !age || !sex || !dob || !weight || !diagnosis) {
-    return res.status(400).json({ message: "Please fill all fields" });
-  }
-
-  const patientId = id.trim();
-  const patientAge = parseInt(age);
-  const patientWeight = parseFloat(weight);
-
-  db.query(
-    "SELECT * FROM patients WHERE TRIM(LOWER(id)) = LOWER(?)",
-    [patientId],
-    (err, result) => {
-      if (err) return res.status(500).json({ message: "Database error" });
-
-      if (result.length > 0) {
-        db.query(
-          "UPDATE patients SET name=?, age=?, sex=?, dob=?, weight=?, diagnosis=? WHERE TRIM(LOWER(id)) = LOWER(?)",
-          [name, patientAge, sex, dob, patientWeight, diagnosis, patientId],
-          (err) => {
-            if (err) return res.status(500).json({ message: "Update failed" });
-            res.json({ message: "Patient updated successfully" });
-          }
-        );
-      } else {
-       
-        db.query(
-          "INSERT INTO patients (id, name, age, sex, dob, weight, diagnosis) VALUES (?, ?, ?, ?, ?, ?, ?)",
-          [patientId, name, patientAge, sex, dob, patientWeight, diagnosis],
-          (err) => {
-            if (err) return res.status(500).json({ message: "Insert failed" });
-            res.json({ message: "Patient added successfully" });
-          }
-        );
-      }
+// ✅ Test database connection
+app.get("/api/db-test", (req, res) => {
+  db.query("SELECT 1", (err) => {
+    if (err) {
+      console.error("❌ Database error:", err);
+      return res.status(500).json({ message: "Database NOT connected" });
     }
-  );
+    res.json({ message: "✅ Database connected successfully" });
+  });
 });
 
-app.post("/search", (req, res) => {
-  const { id } = req.body;
-  if (!id) return res.json({ status: "error", message: "No ID provided" });
-
-  const searchId = id.trim();
-
-  db.query(
-    "SELECT * FROM patients WHERE TRIM(LOWER(id)) = LOWER(?)",
-    [searchId],
-    (err, result) => {
-      if (err) return res.json({ status: "error", message: "Database error" });
-      if (result.length === 0) return res.json({ status: "notfound" });
-
-      res.json({ status: "found", patient: result[0] });
-    }
-  );
+// ✅ Root route
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+// ✅ Start server
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
